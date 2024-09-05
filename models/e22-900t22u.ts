@@ -162,7 +162,9 @@ export type lora_cfg_t = Static<typeof lora_cfg>
 export class lora_node {
     private config: lora_cfg_t
     private file: unknown
-    mode: 'local' | 'ota' = 'local'
+    mode: 'local' | 'ota' = 'local' //It determines if 0xcf 0xcf is preponed
+
+    static UnrecognizedCommand = class extends Error { }
 
     // biome-ignore lint/suspicious/noExplicitAny: Validation will be performed downstream
     constructor(file: unknown, opts: any = {}) { this.file = file; this.config = Value.Default(opts.mode === "relay" ? lora_cfg_relay : lora_cfg_endpoint, opts) as lora_cfg_t }
@@ -257,14 +259,14 @@ export class lora_node {
      * @param key crypto key selected
      * @returns the command to send.
      */
-    set_crypto(key: number): Uint8Array {
+    set_crypto(key: number) {
         const tmp = new Uint8Array(3 + 2)
         tmp[0] = 0xC0
         tmp[1] = 0x00
         tmp[2] = 0x08
         tmp[3] = key & 0xff00
         tmp[4] = key & 0x00ff
-        return tmp;
+
     }
 
     /**
