@@ -9,6 +9,9 @@ import { Value } from "@sinclair/typebox/value";
     - the encoding of air_rate
 */
 
+/**
+ * Special address for broadcast
+ */
 export const BROADCAST = 0xffff
 
 //#region Annoying definitions to convert from enum type to integer
@@ -98,6 +101,9 @@ const mode_e: Record<number, Static<typeof mode_t>> = {
 
 //#endregion
 
+/**
+ * Schema for a lora modem set as endpoint node.
+ */
 export const lora_cfg_endpoint = t.Object({
     mode: t.Literal('endpoint', { default: 'endpont' }),
     address: t.Integer({ minimum: 0, maximum: 65535, default: 0 }),
@@ -121,6 +127,9 @@ export const lora_cfg_endpoint = t.Object({
     }, { default: {}, additionalProperties: false })
 }, { additionalProperties: false })
 
+/**
+ * Schema for a lora modem set as relay node.
+ */
 export const lora_cfg_relay = t.Object({
     mode: t.Literal('relay', { default: 'relay' }),
     src_network: t.Integer({ minimum: 0, maximum: 255, default: 0 }),
@@ -149,6 +158,12 @@ export const lora_cfg = t.Union([lora_cfg_endpoint, lora_cfg_relay])
 export type lora_cfg_t = Static<typeof lora_cfg>
 
 
+/**
+ * Serialize the configuration. 
+ * While the original specs allows to update each register on its own, here it is assumed to be in one step.
+ * @param cfg a validated configuration json
+ * @returns an array to send via serial
+ */
 export function serialize_config(cfg: lora_cfg_t): Uint8Array {
     const tmp = new Uint8Array(3 + 7)
     tmp[0] = 0xC0
@@ -171,6 +186,13 @@ export function serialize_config(cfg: lora_cfg_t): Uint8Array {
     return tmp
 }
 
+/**
+ * De-serialize a byte array into a configuration json.
+ * While the original specs would allow to read registers in chunks, here it is assumed to be in one operation.
+ * @param array the returned array of bytes
+ * @param skip_sig_check ignore checks on the return header (used for internal tests only)
+ * @returns the de-serialized json
+ */
 export function deserialize_config(array: Uint8Array, skip_sig_check = false): lora_cfg_t {
     if (!skip_sig_check && array[0] !== 0xC1 && array[1] !== 0x00 && array[2] !== 0x08) throw new Error("Unable to decode an arbitrary received message.")
     const cfg: lora_cfg_t = { radio: {}, serial: {}, transport: {} } as lora_cfg_t
@@ -201,6 +223,11 @@ export function deserialize_config(array: Uint8Array, skip_sig_check = false): l
     return cfg
 }
 
+/**
+ * Generate the command to send to set a specific crypto key (write-only registers)
+ * @param key crypto key selected
+ * @returns the command to send.
+ */
 export function set_crypto(key: number): Uint8Array {
     const tmp = new Uint8Array(3 + 2)
     tmp[0] = 0xC0
@@ -211,10 +238,20 @@ export function set_crypto(key: number): Uint8Array {
     return tmp;
 }
 
-export function get_pid(array: Uint8Array) {
+/**
+ * Generate the command to request the pid (read-only registers)
+ */
+export function get_pid() {
     return new Uint8Array([0xC0, 0x80, 0x6])
 }
 
+/**
+ * Generate the command to switch operating mode of the modem (transmission/configuration).
+ * It only works if `enable_mode_switch` is set to true
+ */
+export function switch_modem_mode(mode: 'transmission' | 'configuration') {
+    return new Uint8Array([0xC0, 0xC1, 0xC2, 0xC3, 0x02, mode === 'transmission' ? 0 : 1])
+}
 
 //////////////
 
