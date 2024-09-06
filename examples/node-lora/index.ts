@@ -1,5 +1,5 @@
-import { lora_node } from "ebyte-lora-ts/client.js"
-import { model, type endpoint_t, type relay_t } from "ebyte-lora-ts/models/e22-900t22u.js";
+import { lora_node } from "ebyte-lora-ts/client"
+import { model, type endpoint_t, type relay_t } from "ebyte-lora-ts/models/e22-900t22u";
 
 import { autoDetect } from '@serialport/bindings-cpp'
 const Binding = autoDetect()
