@@ -1,5 +1,5 @@
-import { lora_node } from "./client.ts"
-import { model, type lora_cfg_endpoint_t, type lora_cfg_relay_t } from "./models/e22-900t22u";
+import { lora_node } from "../client.ts"
+import { model, type lora_cfg_endpoint_t, type lora_cfg_relay_t } from "../models/e22-900t22u";
 import { Value } from "@sinclair/typebox/value";
 //////////////
 

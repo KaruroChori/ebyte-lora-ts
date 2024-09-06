@@ -1,5 +1,7 @@
+//https://www.cdebyte.com/products/E22-900T22U
+//Specs: https://www.cdebyte.com/pdf-down.aspx?id=3105
+
 import { Type as t, type Static } from "@sinclair/typebox";
-import { Value } from "@sinclair/typebox/value";
 
 /*
     Implementation specific for the e22-900t22u.
