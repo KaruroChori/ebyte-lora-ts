@@ -106,7 +106,7 @@ const mode_e: Record<number, Static<typeof mode_t>> = {
 /**
  * Schema for a lora modem set as endpoint node.
  */
-export const lora_cfg_endpoint = t.Object({
+export const endpoint = t.Object({
     mode: t.Literal('endpoint', { default: 'endpont' }),
     address: t.Integer({ minimum: 0, maximum: 65535, default: 0 }),
     network: t.Integer({ minimum: 0, maximum: 255, default: 0 }),
@@ -132,7 +132,7 @@ export const lora_cfg_endpoint = t.Object({
 /**
  * Schema for a lora modem set as relay node.
  */
-export const lora_cfg_relay = t.Object({
+export const relay = t.Object({
     mode: t.Literal('relay', { default: 'relay' }),
     src_network: t.Integer({ minimum: 0, maximum: 255, default: 0 }),
     dst_network: t.Integer({ minimum: 0, maximum: 255, default: 0 }),
@@ -155,17 +155,17 @@ export const lora_cfg_relay = t.Object({
     }, { default: {}, additionalProperties: false })
 }, { additionalProperties: false })
 
-export const lora_cfg = t.Union([lora_cfg_endpoint, lora_cfg_relay])
+export const lora_cfg = t.Union([endpoint, relay])
 
 export type lora_cfg_t = Static<typeof lora_cfg>
-export type lora_cfg_endpoint_t = Static<typeof lora_cfg_endpoint>
-export type lora_cfg_relay_t = Static<typeof lora_cfg_relay>
+export type endpoint_t = Static<typeof endpoint>
+export type relay_t = Static<typeof relay>
 
 
 
 export const model = {
-    lora_cfg_endpoint,
-    lora_cfg_relay,
+    endpoint,
+    relay,
 
     /**
      * Serialize the configuration. 
@@ -174,7 +174,7 @@ export const model = {
      * @param temporary true if writing on temporary registers
      * @returns an array to send via serial
      */
-    serialize(cfg: lora_cfg_t): Uint8Array {
+    serialize_cfg(cfg: lora_cfg_t): Uint8Array {
         const tmp = new Uint8Array(7)
         if (cfg.mode === 'relay') {
             tmp[0] = cfg.src_network
@@ -200,7 +200,7 @@ export const model = {
      * @param skip_sig_check ignore checks on the return header (used for internal tests only)
      * @returns the de-serialized json
      */
-    deserialize(array: Uint8Array): lora_cfg_t {
+    deserialize_cfg(array: Uint8Array): lora_cfg_t {
         if (array.length < 7) throw new Error("Unable to decode an arbitrary received message.")
         const cfg: lora_cfg_t = { radio: {}, serial: {}, transport: {} } as lora_cfg_t
 

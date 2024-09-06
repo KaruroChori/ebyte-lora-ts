@@ -1,0 +1,1 @@
+//Generate json schema to host to have hints while filling the configuration as a json file.
