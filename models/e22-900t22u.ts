@@ -107,7 +107,8 @@ const mode_e: Record<number, Static<typeof mode_t>> = {
  * Schema for a lora modem set as endpoint node.
  */
 export const endpoint = t.Object({
-    mode: t.Literal('endpoint', { default: 'endpont' }),
+    type: t.Literal("e22-900t22u", { default: "e22-900t22u" }),
+    mode: t.Literal('endpoint', { default: 'endpoint' }),
     address: t.Integer({ minimum: 0, maximum: 65535, default: 0 }),
     network: t.Integer({ minimum: 0, maximum: 255, default: 0 }),
     radio: t.Object({
@@ -133,6 +134,7 @@ export const endpoint = t.Object({
  * Schema for a lora modem set as relay node.
  */
 export const relay = t.Object({
+    type: t.Literal("e22-900t22u", { default: "e22-900t22u" }),
     mode: t.Literal('relay', { default: 'relay' }),
     src_network: t.Integer({ minimum: 0, maximum: 255, default: 0 }),
     dst_network: t.Integer({ minimum: 0, maximum: 255, default: 0 }),
@@ -182,7 +184,7 @@ export const model = {
             tmp[2] = 0x00
         }
         else {
-            tmp[0] = cfg.address & 0xff00
+            tmp[0] = cfg.address & 0xff00 >> 8
             tmp[1] = cfg.address & 0x00ff
             tmp[2] = cfg.network
         }
@@ -203,17 +205,17 @@ export const model = {
     deserialize_cfg(array: Uint8Array): lora_cfg_t {
         if (array.length < 7) throw new Error("Unable to decode an arbitrary received message.")
         const cfg: lora_cfg_t = { radio: {}, serial: {}, transport: {} } as lora_cfg_t
-
+        cfg.type = 'e22-900t22u'
         cfg.mode = (((array[6] >> 5) & 1) === 0) ? 'endpoint' : 'relay'
         if (cfg.mode === 'endpoint') {
-            cfg.address = array[0] << 8 + array[1]
+            cfg.address = (array[0] << 8) + array[1]
             cfg.network = array[2]
         }
         else {
             cfg.src_network = array[0]
             cfg.dst_network = array[1]
         }
-        cfg.radio.air_rate = air_rate_e[array[3] & 1]
+        cfg.radio.air_rate = air_rate_e[array[3] & 7]
         cfg.serial.mode = mode_e[((array[3] >> 3) & 3)]
         cfg.serial.baud_rate = baud_rate_e[((array[3] >> 5) & 7)]
 

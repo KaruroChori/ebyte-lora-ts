@@ -1,11 +1,10 @@
 import { lora_node } from "../client.ts"
-import { model, type lora_cfg_endpoint_t, type lora_cfg_relay_t } from "../models/e22-900t22u";
-import { Value } from "@sinclair/typebox/value";
+import { model, type endpoint_t, type relay_t } from "../models/e22-900t22u";
 //////////////
 
 
-const client = new lora_node<lora_cfg_endpoint_t, lora_cfg_relay_t>({}, model)
-client.config = { mode: "relay" }
+const client = new lora_node<endpoint_t, relay_t>({}, model)
+console.log(await client.read_cfg())
 
 /*
 function test() {

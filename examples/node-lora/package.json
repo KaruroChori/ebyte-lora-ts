@@ -1,15 +1,15 @@
 {
-  "name": "ebyte-lora-ts",
+  "name": "node-lora",
   "module": "index.ts",
   "type": "module",
-  "license": "BSD-3-Clause",
+  "license": "CC0-1.0",
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.5.4"
   },
   "dependencies": {
-    "@sinclair/typebox": "^0.33.9"
+    "@serialport/bindings-cpp": "^12.0.1"
   }
 }
