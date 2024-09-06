@@ -12,6 +12,7 @@
     "moduleResolution": "bundler",
     "verbatimModuleSyntax": true,
     "noEmit": false,
+    "declaration": true,
 
     // Best practices
     "strict": true,
