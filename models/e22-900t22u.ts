@@ -156,18 +156,14 @@ export const lora_cfg_relay = t.Object({
 export const lora_cfg = t.Union([lora_cfg_endpoint, lora_cfg_relay])
 
 export type lora_cfg_t = Static<typeof lora_cfg>
+export type lora_cfg_endpoint_t = Static<typeof lora_cfg_endpoint>
+export type lora_cfg_relay_t = Static<typeof lora_cfg_relay>
 
 
 
-export class lora_node {
-    private config: lora_cfg_t
-    private file: unknown
-    mode: 'local' | 'ota' = 'local' //It determines if 0xcf 0xcf is preponed
-
-    static UnrecognizedCommand = class extends Error { }
-
-    // biome-ignore lint/suspicious/noExplicitAny: Validation will be performed downstream
-    constructor(file: unknown, opts: any = {}) { this.file = file; this.config = Value.Default(opts.mode === "relay" ? lora_cfg_relay : lora_cfg_endpoint, opts) as lora_cfg_t }
+export const model = {
+    lora_cfg_endpoint,
+    lora_cfg_relay,
 
     /**
      * Serialize the configuration. 
@@ -176,7 +172,7 @@ export class lora_node {
      * @param temporary true if writing on temporary registers
      * @returns an array to send via serial
      */
-    static serialize_config(cfg: lora_cfg_t): Uint8Array {
+    serialize(cfg: lora_cfg_t): Uint8Array {
         const tmp = new Uint8Array(7)
         if (cfg.mode === 'relay') {
             tmp[0] = cfg.src_network
@@ -193,7 +189,7 @@ export class lora_node {
         tmp[5] = cfg.radio.channel
         tmp[6] = (cfg.transport.enable_LBT ? 1 : 0) << 4 | (cfg.mode === 'relay' ? 1 : 0) << 5 | (cfg.transport.fixed ? 1 : 0) << 6 | (cfg.transport.enable_RSSI ? 1 : 0) << 7
         return tmp
-    }
+    },
 
     /**
      * De-serialize a byte array into a configuration json.
@@ -202,7 +198,7 @@ export class lora_node {
      * @param skip_sig_check ignore checks on the return header (used for internal tests only)
      * @returns the de-serialized json
      */
-    static deserialize_config(array: Uint8Array): lora_cfg_t {
+    deserialize(array: Uint8Array): lora_cfg_t {
         if (array.length < 7) throw new Error("Unable to decode an arbitrary received message.")
         const cfg: lora_cfg_t = { radio: {}, serial: {}, transport: {} } as lora_cfg_t
 
@@ -232,75 +228,5 @@ export class lora_node {
         return cfg
     }
 
-    /**
-     * send C0/C2 BASE LENGHT DATA
-     * recv C1 BASE LENGTH DATA
-     * @param base 
-     * @param data 
-     * @param temporary 
-     */
-    write_registers(base: number, data: Uint8Array, temporary = false) { }
-
-    /**
-     * send C1 BASE LENGTH
-     * recv C1 BASE LENGTH DATA
-     * @param base 
-     */
-    read_registers(base: number): Uint8Array { }
-
-
-    /**
-     * Request device information (read-only registers)
-     */
-    get_pid() { const payload = new Uint8Array([0xC1, 0x80, 0x6]) }
-
-    /**
-     * Set a specific crypto key (write-only registers)
-     * @param key crypto key selected
-     * @returns the command to send.
-     */
-    set_crypto(key: number) {
-        const tmp = new Uint8Array(3 + 2)
-        tmp[0] = 0xC0
-        tmp[1] = 0x00
-        tmp[2] = 0x08
-        tmp[3] = key & 0xff00
-        tmp[4] = key & 0x00ff
-
-    }
-
-    /**
-     * Switch operating mode of the modem (transmission/configuration).
-     * It only works if `enable_mode_switch` is set to true
-     */
-    switch_modem_mode(mode: 'transmission' | 'configuration') {
-        const tmp = new Uint8Array([0xC0, 0xC1, 0xC2, 0xC3, 0x02, mode === 'transmission' ? 0 : 1])
-    }
 }
 
-
-
-
-
-
-//////////////
-
-
-function test() {
-    const w = Value.Default(lora_cfg_relay, {
-        mode: "relay",
-        radio: { air_rate: 2400 },
-        src_network: 0xaa,
-        dst_network: 0xbb,
-    }) as lora_cfg_t;
-
-    console.log(w, Value.Check(lora_cfg_relay, w));
-    console.log(lora_node.serialize_config(w));
-    console.log(lora_node.deserialize_config(lora_node.serialize_config(w)));
-    console.log(
-        lora_node.serialize_config(lora_node.deserialize_config(lora_node.serialize_config(w))),
-    );
-}
-
-//Stupid hacky way to run only when directly run & not as imported. It does not work when bundled.
-if (this !== undefined) test()
