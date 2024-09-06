@@ -1,10 +1,10 @@
-import { lora_node } from "ebyte-lora-ts/client.ts"
-import { model, type endpoint_t, type relay_t } from "ebyte-lora-ts/models/e22-900t22u.ts";
+import { lora_node } from "ebyte-lora-ts/client.js"
+import { model, type endpoint_t, type relay_t } from "ebyte-lora-ts/models/e22-900t22u.js";
 
 import { autoDetect } from '@serialport/bindings-cpp'
 const Binding = autoDetect()
 
-const port = await Binding.open({ path: '/dev/ttyUSB0', baudRate: 9600, autoOpen: true })
+const port = await Binding.open({ path: '/dev/ttyUSB0', baudRate: 9600 })
 
 //Extremely bad buggy design of wrappers for bindings-cpp. Just to show it running (sometimes)
 const client = new lora_node<endpoint_t, relay_t>({

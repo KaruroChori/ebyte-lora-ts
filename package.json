@@ -11,5 +11,8 @@
   },
   "dependencies": {
     "@sinclair/typebox": "^0.33.9"
+  },
+  "scripts": {
+    "prepack": "rm -rf dist && tsc"
   }
 }
