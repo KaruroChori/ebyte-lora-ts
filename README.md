@@ -18,6 +18,13 @@ This library is only handling the packet building & validation from/to json conf
 
 ## How to use
 
-## Upcoming features
+TBW
 
-They are described in [here](./TODO.md).
+## Information for developers
+
+If you want to contribute to this project, or you need more details about the implementation, I wrote some notes [here](./docs/developers.md).
+
+## Milestones
+
+You can find information about what is expected in future releases [here](./TODO.md).  
+Please, keep in mind those plans are subject to change at any point in time.
