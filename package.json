@@ -17,6 +17,7 @@
     "@sinclair/typebox": "^0.33.9"
   },
   "scripts": {
-    "prepack": "rm -rf dist && tsc"
+    "prepack": "rm -rf dist && tsc",
+    "gen-schemas": "./scripts/gen-schemas.ts"
   }
 }

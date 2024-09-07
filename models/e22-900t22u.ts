@@ -107,6 +107,8 @@ const mode_e: Record<number, Static<typeof mode_t>> = {
  * Schema for a lora modem set as endpoint node.
  */
 export const endpoint = t.Object({
+    "$schema": t.Optional(t.String({ format: 'uri' })),
+    "$id": t.Optional(t.String({ format: 'uri' })),
     type: t.Literal("e22-900t22u", { default: "e22-900t22u" }),
     mode: t.Literal('endpoint', { default: 'endpoint' }),
     address: t.Integer({ minimum: 0, maximum: 65535, default: 0 }),
@@ -134,6 +136,8 @@ export const endpoint = t.Object({
  * Schema for a lora modem set as relay node.
  */
 export const relay = t.Object({
+    "$schema": t.Optional(t.String({ format: 'uri' })),
+    "$id": t.Optional(t.String({ format: 'uri' })),
     type: t.Literal("e22-900t22u", { default: "e22-900t22u" }),
     mode: t.Literal('relay', { default: 'relay' }),
     src_network: t.Integer({ minimum: 0, maximum: 255, default: 0 }),

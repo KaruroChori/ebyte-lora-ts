@@ -1,0 +1,237 @@
+{
+    "additionalProperties": false,
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "format": "uri",
+            "type": "string"
+        },
+        "$id": {
+            "format": "uri",
+            "type": "string"
+        },
+        "type": {
+            "default": "e22-900t22u",
+            "const": "e22-900t22u",
+            "type": "string"
+        },
+        "mode": {
+            "default": "relay",
+            "const": "relay",
+            "type": "string"
+        },
+        "src_network": {
+            "minimum": 0,
+            "maximum": 255,
+            "default": 0,
+            "type": "integer"
+        },
+        "dst_network": {
+            "minimum": 0,
+            "maximum": 255,
+            "default": 0,
+            "type": "integer"
+        },
+        "radio": {
+            "default": {},
+            "additionalProperties": false,
+            "type": "object",
+            "properties": {
+                "air_rate": {
+                    "default": 2400,
+                    "description": "Transmission budget in bps",
+                    "anyOf": [
+                        {
+                            "const": 2400,
+                            "type": "number"
+                        },
+                        {
+                            "const": 4800,
+                            "type": "number"
+                        },
+                        {
+                            "const": 9600,
+                            "type": "number"
+                        },
+                        {
+                            "const": 19200,
+                            "type": "number"
+                        },
+                        {
+                            "const": 38400,
+                            "type": "number"
+                        },
+                        {
+                            "const": 62500,
+                            "type": "number"
+                        }
+                    ]
+                },
+                "channel": {
+                    "minimum": 0,
+                    "maximum": 80,
+                    "default": 18,
+                    "type": "integer"
+                },
+                "tx_power": {
+                    "default": 22,
+                    "description": "dBm of power for transmission",
+                    "anyOf": [
+                        {
+                            "const": 22,
+                            "type": "number"
+                        },
+                        {
+                            "const": 17,
+                            "type": "number"
+                        },
+                        {
+                            "const": 13,
+                            "type": "number"
+                        },
+                        {
+                            "const": 10,
+                            "type": "number"
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "air_rate",
+                "channel",
+                "tx_power"
+            ]
+        },
+        "serial": {
+            "default": {},
+            "additionalProperties": false,
+            "type": "object",
+            "properties": {
+                "baud_rate": {
+                    "default": 9600,
+                    "anyOf": [
+                        {
+                            "const": 1200,
+                            "type": "number"
+                        },
+                        {
+                            "const": 2400,
+                            "type": "number"
+                        },
+                        {
+                            "const": 4800,
+                            "type": "number"
+                        },
+                        {
+                            "const": 9600,
+                            "type": "number"
+                        },
+                        {
+                            "const": 19200,
+                            "type": "number"
+                        },
+                        {
+                            "const": 38400,
+                            "type": "number"
+                        },
+                        {
+                            "const": 57600,
+                            "type": "number"
+                        },
+                        {
+                            "const": 115200,
+                            "type": "number"
+                        }
+                    ]
+                },
+                "mode": {
+                    "default": "8N1",
+                    "description": "Serial mode as data bits, parity (none, odd, even), stop bits",
+                    "anyOf": [
+                        {
+                            "const": "8N1",
+                            "type": "string"
+                        },
+                        {
+                            "const": "8O1",
+                            "type": "string"
+                        },
+                        {
+                            "const": "8E1",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "enable_RSSI_cmds": {
+                    "default": false,
+                    "type": "boolean"
+                },
+                "enable_mode_switch": {
+                    "default": false,
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "baud_rate",
+                "mode",
+                "enable_RSSI_cmds",
+                "enable_mode_switch"
+            ]
+        },
+        "transport": {
+            "default": {},
+            "additionalProperties": false,
+            "type": "object",
+            "properties": {
+                "enable_RSSI": {
+                    "default": false,
+                    "type": "boolean"
+                },
+                "fixed": {
+                    "default": true,
+                    "type": "boolean"
+                },
+                "enable_LBT": {
+                    "default": false,
+                    "type": "boolean"
+                },
+                "frame_size": {
+                    "default": 240,
+                    "anyOf": [
+                        {
+                            "const": 240,
+                            "type": "number"
+                        },
+                        {
+                            "const": 128,
+                            "type": "number"
+                        },
+                        {
+                            "const": 64,
+                            "type": "number"
+                        },
+                        {
+                            "const": 32,
+                            "type": "number"
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "enable_RSSI",
+                "fixed",
+                "enable_LBT",
+                "frame_size"
+            ]
+        }
+    },
+    "required": [
+        "type",
+        "mode",
+        "src_network",
+        "dst_network",
+        "radio",
+        "serial",
+        "transport"
+    ]
+}

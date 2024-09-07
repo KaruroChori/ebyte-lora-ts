@@ -7,6 +7,8 @@ export declare const BROADCAST = 65535;
  * Schema for a lora modem set as endpoint node.
  */
 export declare const endpoint: import("@sinclair/typebox").TObject<{
+    $schema: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+    $id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
     type: import("@sinclair/typebox").TLiteral<"e22-900t22u">;
     mode: import("@sinclair/typebox").TLiteral<"endpoint">;
     address: import("@sinclair/typebox").TInteger;
@@ -33,6 +35,8 @@ export declare const endpoint: import("@sinclair/typebox").TObject<{
  * Schema for a lora modem set as relay node.
  */
 export declare const relay: import("@sinclair/typebox").TObject<{
+    $schema: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+    $id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
     type: import("@sinclair/typebox").TLiteral<"e22-900t22u">;
     mode: import("@sinclair/typebox").TLiteral<"relay">;
     src_network: import("@sinclair/typebox").TInteger;
@@ -56,6 +60,8 @@ export declare const relay: import("@sinclair/typebox").TObject<{
     }>;
 }>;
 export declare const lora_cfg: import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+    $schema: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+    $id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
     type: import("@sinclair/typebox").TLiteral<"e22-900t22u">;
     mode: import("@sinclair/typebox").TLiteral<"endpoint">;
     address: import("@sinclair/typebox").TInteger;
@@ -78,6 +84,8 @@ export declare const lora_cfg: import("@sinclair/typebox").TUnion<[import("@sinc
         frame_size: import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<240>, import("@sinclair/typebox").TLiteral<128>, import("@sinclair/typebox").TLiteral<64>, import("@sinclair/typebox").TLiteral<32>]>;
     }>;
 }>, import("@sinclair/typebox").TObject<{
+    $schema: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+    $id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
     type: import("@sinclair/typebox").TLiteral<"e22-900t22u">;
     mode: import("@sinclair/typebox").TLiteral<"relay">;
     src_network: import("@sinclair/typebox").TInteger;
@@ -105,6 +113,8 @@ export type endpoint_t = Static<typeof endpoint>;
 export type relay_t = Static<typeof relay>;
 export declare const model: {
     endpoint: import("@sinclair/typebox").TObject<{
+        $schema: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        $id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
         type: import("@sinclair/typebox").TLiteral<"e22-900t22u">;
         mode: import("@sinclair/typebox").TLiteral<"endpoint">;
         address: import("@sinclair/typebox").TInteger;
@@ -128,6 +138,8 @@ export declare const model: {
         }>;
     }>;
     relay: import("@sinclair/typebox").TObject<{
+        $schema: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        $id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
         type: import("@sinclair/typebox").TLiteral<"e22-900t22u">;
         mode: import("@sinclair/typebox").TLiteral<"relay">;
         src_network: import("@sinclair/typebox").TInteger;

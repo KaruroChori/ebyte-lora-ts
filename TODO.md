@@ -2,11 +2,14 @@
 
 Needed for release 0.1.1
 
-- [ ] CLI utils to configure connected devices via a JSON file
-- [ ] Split native code in a separate repo
-- [ ] Serve JSON schemas as part of the repository itself.
+- [x] Split native code in a separate repo
+- [x] Serve JSON schemas as part of the repository itself.
 
 Needed for release 0.1.3
+
+- [ ] CLI utils to configure connected devices via a JSON file (maybe in a different repo?)
+
+Needed for release 0.1.5
 
 - [ ] Example for webapis
 - [ ] Fill in the 230 and 400 versions.

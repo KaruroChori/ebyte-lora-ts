@@ -16,6 +16,8 @@ This library is only handling the packet building & validation from/to json conf
 - [QuickJS](https://github.com/quickjs-ng/quickjs) should work fine as long as you bring your own read/write.
 - [Txiki](https://github.com/saghul/txiki.js) as well. I wrote a [serial module](https://github.com/KaruroChori/serial-txiki-module) a while back, this is expected to work.
 
+## How to use
+
 ## Upcoming features
 
 They are described in [here](./TODO.md).
